@@ -9,7 +9,10 @@ tool (
 	github.com/segmentio/golines
 )
 
-require github.com/spf13/cobra v1.9.1
+require (
+	github.com/spf13/cobra v1.9.1
+	gopkg.in/yaml.v3 v3.0.1
+)
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
@@ -240,7 +243,6 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
 	mvdan.cc/gofumpt v0.8.0 // indirect
 	mvdan.cc/unparam v0.0.0-20250301125049-0df0534333a4 // indirect

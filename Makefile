@@ -27,7 +27,7 @@ lint:
 fmt:
 	@echo "Formatting Go files..."
 	go tool golines -m 120 -w .
-	go tool goimports-reviser ./...
+	go tool goimports-reviser -imports-order "std,company,project,general" ./...
 
 # Target to run your Go CLI application directly
 # Assumes your main function is in a file within the path defined by MAIN_PACKAGE
