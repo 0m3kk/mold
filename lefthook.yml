@@ -1,0 +1,7 @@
+pre-commit:
+  jobs:
+    - name: format
+      run: make fmt
+
+    - name: lint
+      run: make lint
