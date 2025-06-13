@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -18,6 +19,19 @@ var (
 	outputDir string
 	dataFile  string
 )
+
+// replacePlaceholdersInPath replace placeholders in directory names.
+func replacePlaceholdersInPath(path string, data map[string]any) (string, error) {
+	tmpl, err := template.New("path").Parse(path)
+	if err != nil {
+		return "", err
+	}
+	var result strings.Builder
+	if err = tmpl.Execute(&result, data); err != nil {
+		return "", err
+	}
+	return result.String(), nil
+}
 
 // applyCmd represents the apply command, renamed from createCmd.
 //
@@ -81,6 +95,11 @@ and saves the result to the output directory. All other files are copied as-is.`
 			relPath, innerErr := filepath.Rel(templatePath, path)
 			if innerErr != nil {
 				return fmt.Errorf("failed to get relative path for '%s': %w", path, innerErr)
+			}
+			// Replace placeholders in relative path
+			relPath, innerErr = replacePlaceholdersInPath(relPath, data)
+			if innerErr != nil {
+				return fmt.Errorf("failed to replace placeholders in path '%s': %w", relPath, innerErr)
 			}
 			destPath := filepath.Join(outputDir, relPath)
 
