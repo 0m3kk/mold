@@ -1,4 +1,4 @@
-# **Mold CLI**
+# **Mold**
 
 **A simple and powerful CLI tool for scaffolding projects from templates.**
 
@@ -20,7 +20,7 @@ To get started, clone the repository and build the binary:
 ```sh
 # Clone the repository
 git clone https://github.com/om3kk/mold
-cd mold-cli
+cd mold
 
 # Build the binary
 go build -o mold ./cmd/mold
