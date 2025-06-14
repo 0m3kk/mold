@@ -4,12 +4,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// templatesDir will be populated by the persistent flag.
-// It holds the path to the directory containing the templates.
-//
-//nolint:gochecknoglobals // this is command flag
-var templatesDir string
-
 // rootCmd represents the base command when called without any subcommands.
 //
 //nolint:gochecknoglobals // this is command definition
@@ -33,13 +27,6 @@ func Execute() error {
 //
 //nolint:gochecknoinits // The command 'init' is acceptable.
 func init() {
-	// Add a persistent flag to the root command for the templates directory.
-	// This flag will be available to all subcommands that descend from rootCmd.
-	rootCmd.PersistentFlags().
-		StringVarP(&templatesDir, "dir", "t", "templates", "Directory to store and read templates from")
-
 	// Add subcommands to the root command.
-	rootCmd.AddCommand(initCmd)
-	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(applyCmd)
 }

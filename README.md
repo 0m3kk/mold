@@ -6,8 +6,6 @@ Mold helps you generate project structures, configuration files, or any boilerpl
 
 ## **Features**
 
-- **Template Initialization**: Quickly create a home for your templates.
-- **Template Management**: Easily list all available template sets.
 - **Flexible Template Path**: Specify a custom directory for your templates using a global flag.
 - **Data-Driven Rendering**: Use JSON or YAML files to provide data for your templates, ensuring a clean separation between logic and configuration.
 - **Direct File Copying**: Non-template files are copied as-is, preserving your project structure perfectly.
@@ -34,35 +32,7 @@ go build -o mold ./cmd/mold
 
 Mold is operated through a series of commands and flags.
 
-### **Global Flag**
-
-- `--dir`, `-t <path>`: Specifies the directory where your templates are stored. This flag works with `init`, `list`, and `apply`. It defaults to `./templates`.
-
 ### **Commands**
-
-#### **mold init**
-
-Initializes the templates directory.
-
-```sh
-# Create the default 'templates' directory
-mold init
-
-# Create a custom directory for templates
-mold init --dir ./my-custom-templates
-```
-
-#### **mold list**
-
-Lists all available template sets (subdirectories) within the templates directory.
-
-```sh
-# List templates from the default directory
-mold list
-
-# List templates from a custom directory
-mold list -t ./my-custom-templates
-```
 
 #### **mold apply <template_path>**
 
