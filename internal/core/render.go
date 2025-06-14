@@ -4,8 +4,19 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
+
+	"github.com/stoewer/go-strcase"
 )
+
+//nolint:gochecknoglobals // helper function use when render templates
+var helperFunc = template.FuncMap{
+	"snake":  strcase.SnakeCase,
+	"usnake": strcase.UpperSnakeCase,
+	"camel":  strcase.UpperCamelCase,
+	"lcamel": strcase.LowerCamelCase,
+}
 
 // RenderTemplateFile reads a template file, executes it with the provided data,
 // and writes the output to the destination path.
@@ -17,7 +28,7 @@ func RenderTemplateFile(templatePath, destPath string, data map[string]any) erro
 	}
 
 	// Create a new template, parse the content, and execute it.
-	tmpl, err := template.New(filepath.Base(templatePath)).Parse(string(content))
+	tmpl, err := template.New(filepath.Base(templatePath)).Funcs(helperFunc).Parse(string(content))
 	if err != nil {
 		return fmt.Errorf("could not parse template '%s': %w", templatePath, err)
 	}
@@ -40,4 +51,17 @@ func RenderTemplateFile(templatePath, destPath string, data map[string]any) erro
 		return fmt.Errorf("failed to stat source file '%s': %w", templatePath, err)
 	}
 	return os.Chmod(destPath, sourceInfo.Mode())
+}
+
+// ReplacePlaceholdersInPath replace placeholders in directory names.
+func ReplacePlaceholdersInPath(path string, data map[string]any) (string, error) {
+	tmpl, err := template.New("path").Funcs(helperFunc).Parse(path)
+	if err != nil {
+		return "", err
+	}
+	var result strings.Builder
+	if err = tmpl.Execute(&result, data); err != nil {
+		return "", err
+	}
+	return result.String(), nil
 }

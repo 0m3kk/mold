@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -19,19 +18,6 @@ var (
 	outputDir string
 	dataFile  string
 )
-
-// replacePlaceholdersInPath replace placeholders in directory names.
-func replacePlaceholdersInPath(path string, data map[string]any) (string, error) {
-	tmpl, err := template.New("path").Parse(path)
-	if err != nil {
-		return "", err
-	}
-	var result strings.Builder
-	if err = tmpl.Execute(&result, data); err != nil {
-		return "", err
-	}
-	return result.String(), nil
-}
 
 // applyCmd represents the apply command, renamed from createCmd.
 //
@@ -52,8 +38,8 @@ and saves the result to the output directory. All other files are copied as-is.`
 		if dataFile == "" {
 			// Check if an example data file exists to provide a helpful hint.
 			exampleHint := ""
-			exampleYAML := filepath.Join(templatePath, "template.yaml")
-			exampleJSON := filepath.Join(templatePath, "template.json")
+			exampleYAML := filepath.Join(templatePath, "tmpl.yaml")
+			exampleJSON := filepath.Join(templatePath, "tmpl.json")
 
 			if _, err = os.Stat(exampleYAML); err == nil {
 				exampleHint = fmt.Sprintf(
@@ -91,13 +77,18 @@ and saves the result to the output directory. All other files are copied as-is.`
 				return walkErr
 			}
 
+			// Skip hit files
+			if d.Name() == "tmpl.json" || d.Name() == "tmpl.yaml" {
+				return nil
+			}
+
 			// Determine the destination path for the file or directory.
 			relPath, innerErr := filepath.Rel(templatePath, path)
 			if innerErr != nil {
 				return fmt.Errorf("failed to get relative path for '%s': %w", path, innerErr)
 			}
 			// Replace placeholders in relative path
-			relPath, innerErr = replacePlaceholdersInPath(relPath, data)
+			relPath, innerErr = core.ReplacePlaceholdersInPath(relPath, data)
 			if innerErr != nil {
 				return fmt.Errorf("failed to replace placeholders in path '%s': %w", relPath, innerErr)
 			}
@@ -105,7 +96,7 @@ and saves the result to the output directory. All other files are copied as-is.`
 
 			if d.IsDir() {
 				// Create the corresponding directory in the destination.
-				return os.MkdirAll(destPath, d.Type().Perm())
+				return os.MkdirAll(destPath, 0750)
 			}
 
 			// Decide whether to render or copy the file.
