@@ -467,3 +467,7 @@ linters:
           - gosec
           - noctx
           - wrapcheck
+          - govet
+          - cyclop
+          - gocognit
+          - testpackage
