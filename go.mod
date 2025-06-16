@@ -1,4 +1,4 @@
-module github.com/om3kk/mold
+module github.com/0m3kk/mold
 
 go 1.24.3
 

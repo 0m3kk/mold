@@ -17,7 +17,7 @@ To get started, clone the repository and build the binary:
 
 ```sh
 # Clone the repository
-git clone https://github.com/om3kk/mold
+git clone https://github.com/0m3kk/mold
 cd mold
 
 # Build the binary

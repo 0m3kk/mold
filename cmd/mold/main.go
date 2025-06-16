@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/om3kk/mold/internal/cli"
+	"github.com/0m3kk/mold/internal/cli"
 )
 
 // main is the entry point for the Mold CLI application.

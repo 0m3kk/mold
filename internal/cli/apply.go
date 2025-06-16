@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/om3kk/mold/internal/core"
-	"github.com/om3kk/mold/internal/utils"
+	"github.com/0m3kk/mold/internal/core"
+	"github.com/0m3kk/mold/internal/utils"
 
 	"github.com/spf13/cobra"
 )
